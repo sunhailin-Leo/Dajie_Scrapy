@@ -17,6 +17,11 @@ COOKIES_ENABLED = True
 # 大街网COOKIE
 DAJIE_COOKIE = ""
 
+# LOG配置 --- 暂时不适用 貌似和我自己定义的Logger有冲突
+# LOG_FILE = "Dajie_Scrapy/Dajie_data_spider_Scrapy.log"
+# LOG_LEVEL = "DEBUG"
+# LOG_ENCODING = "UTF-8"
+
 # MONGODB配置
 MONGODB_HOST = "localhost"
 MONGODB_PORT = 27017

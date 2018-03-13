@@ -45,7 +45,6 @@ class DaJie(scrapy.Spider):
         """
         保存cookie
         :param response: Scrapy的返回对象
-        :return:
         """
         cookie = "".join([i.decode("UTF-8")
                           for i in response.headers.getlist('Set-Cookie')])
@@ -56,7 +55,7 @@ class DaJie(scrapy.Spider):
         """
         解析数据
         :param response: Scrapy的返回对象
-        :return:
+        :return: 解析后的数据
         """
         json_data = response.body.decode(response.encoding)
         data = json.loads(json_data, encoding="GB2312")
@@ -67,6 +66,10 @@ class DaJie(scrapy.Spider):
         yield scrapy.Request(url=url, method="GET", callback=self.parse_cookie)
 
     def parse_cookie(self, response):
+        """
+        解析cookie
+        :param response: 返回的对象
+        """
         # set cookie
         self.set_cookie(response)
 
@@ -74,6 +77,10 @@ class DaJie(scrapy.Spider):
         yield scrapy.Request(url=url, method="GET", callback=self.parse_max_page_num)
 
     def parse_max_page_num(self, response):
+        """
+        解析总页数
+        :param response: 返回对象
+        """
         data = self.parse_data(response)
         # 总页数
         total_page = data['data']['totalPage']
@@ -85,7 +92,6 @@ class DaJie(scrapy.Spider):
         """
         解析获取数据
         :param response: Response对象
-        :return: 无返回对象
         """
         data = self.parse_data(response)
         data_list = data['data']['list']
@@ -105,7 +111,8 @@ class DaJie(scrapy.Spider):
                                  callback=self.parse_job_info,
                                  meta={"dajie_data": item})
 
-    def parse_job_info(self, response):
+    @staticmethod
+    def parse_job_info(response):
         """
         解析职位信息
         :param response: Response对象
@@ -200,4 +207,5 @@ class DaJie(scrapy.Spider):
         item['business_info'] = "".join(info)
 
         # 测试输出
-        print(item)
+        # print(item)
+        yield item
